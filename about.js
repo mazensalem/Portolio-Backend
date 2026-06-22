@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
+const upload = require('./util/uploads');
 
 const aboutSchema = new mongoose.Schema(
     {
@@ -49,8 +50,9 @@ router.get('/:id', async (req, res)=>{
 });
 
 
-router.put('/edit/:id', async (req, res) => {
+router.put('/edit/:id', upload.single('img'), async (req, res) => {
     try{
+        const imgUrl = req.file.filename;
         const about = await aboutModel.findByIdAndUpdate(req.params.id, 
             {
                 text: req.body.text, 
@@ -58,7 +60,8 @@ router.put('/edit/:id', async (req, res) => {
                 email: req.body.email, 
                 address: req.body.address, 
                 phone: req.body.phone,
-                socials: req.body.socials
+                socials: req.body.socials,
+                imgUrl
             },
             {returnDocument: 'after'});
         res.status(200).json(about);
@@ -90,8 +93,9 @@ router.delete('/delete/:id', async (req, res)=>{
 });
 
 
-router.post('/add', async (req, res)=>{
+router.post('/add', upload.single('img'), async (req, res)=>{
     try{
+        const imgUrl = req.file.filename;
         const about = await aboutModel.create({
             text: req.body.text, 
             title: req.body.title, 
@@ -100,7 +104,8 @@ router.post('/add', async (req, res)=>{
             phone: req.body.phone, 
             active: false, 
             isDeleted: false,
-            socials: req.body.socials
+            socials: req.body.socials,
+            imgUrl
         });
         res.status(201).json(about);
     }catch (err){

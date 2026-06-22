@@ -38,10 +38,11 @@ router.get('/:id', async (req, res)=>{
 });
 
 
-router.put('/edit/:id', async (req, res)=>{
+router.put('/edit/:id', upload.single('img'), async (req, res)=>{
     const id = req.params.id;
     try{
-        const service = await services.findByIdAndUpdate(id, {title: req.body.title, desc: req.body.desc, isActive: req.body.isActive}, {returnDocument: 'after'});
+        const imgUrl = req.file.filename;
+        const service = await services.findByIdAndUpdate(id, {title: req.body.title, desc: req.body.desc, isActive: req.body.isActive, imgUrl}, {returnDocument: 'after'});
         res.status(200).json(service);
     }catch (err){
         console.log(err);
