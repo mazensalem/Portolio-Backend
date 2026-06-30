@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+const path = require('path');
 const about = require('./about');
 const services = require('./services');
 const experience = require('./experience');
@@ -12,8 +14,10 @@ const port = 3000;
 
 mongoose.connect('mongodb://localhost:27017/Portfolio').then((data)=>console.log('DataBase Connection'));
 
-
+app.use(cors());
 app.use(express.json());
+app.use('/files', express.static(path.join(__dirname, 'uploads')));
+
 
 // TODO: Add Images
 // TODO: Make the text a markdown formate

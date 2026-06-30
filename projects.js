@@ -46,16 +46,16 @@ router.get('/:id', async (req, res)=>{
 });
 
 
-router.put('/edit/:id', upload.single('img'), async (req, res)=>{
+router.put('/edit/:id', async (req, res)=>{
     const id = req.params.id;
-    const imgUrl = req.file.filename;
+//    const imgUrl = req.file.filename;
     try{
         const project = await projectModel.findByIdAndUpdate(id, {
             title: req.body.title,
             GitHub: req.body.GitHub,
             desc: req.body.desc,
             Date: req.body.Date,
-            imgUrl,
+  //          imgUrl,
             isActive: req.body.isActive
         }, {returnDocument: 'after'});
         res.status(200).json(project);
@@ -76,15 +76,15 @@ router.delete('/delete/:id', async (req, res)=>{
     }
 });
 
-router.post('/add', upload.single('img'), async (req, res)=>{
+router.post('/add', async (req, res)=>{
     try{
-        const imgUrl = req.file.filename;
+//        const imgUrl = req.file.filename;
         const project = await projectModel.create({
             title: req.body.title,
             GitHub: req.body.GitHub,
             desc: req.body.desc,
             Date: req.body.Date,
-            imgUrl,
+  //          imgUrl,
             isActive: req.body.isActive,
             isDeleted: false
         });
